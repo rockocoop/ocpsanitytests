@@ -1,0 +1,19 @@
+---
+
+- hosts: masters
+  gather_facts: false
+
+  tasks:
+
+
+  - name: copy kubeconfig
+    fetch: 
+      src: /root/.kube/config
+      dest: ../kubeconfig
+      flat: yes      
+
+- hosts: localhost
+  gather_facts: false
+  roles:
+    - create_project
+
