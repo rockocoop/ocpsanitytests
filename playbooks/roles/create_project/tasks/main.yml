@@ -9,3 +9,13 @@
     password: "{{ '{{ocpadminpass}}' | b64encode }}"
     kubeconfig: "../kubeconfig"
     state: present
+
+- name: Delete a project
+  openshift_raw:
+    api_version: v1
+    kind: Project
+    name: testing
+    username: "{{ '{{ocpadmin}}' | b64encode }}"
+    password: "{{ '{{ocpadminpass}}' | b64encode }}"
+    kubeconfig: "../kubeconfig"
+    state: absent
