@@ -83,14 +83,3 @@ spec:
       securityContext: {}
       terminationGracePeriodSeconds: 30
   test: false
-  triggers:
-  - imageChangeParams:
-      automatic: true
-      containerNames:
-      - nodejs-mongodb-example
-      from:
-        kind: ImageStreamTag
-        name: nodejs-mongodb-example:latest
-        namespace: tests
-    type: ImageChange
-  - type: ConfigChange
