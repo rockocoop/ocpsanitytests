@@ -16,4 +16,5 @@
   gather_facts: false
   roles:
     - create_project
+    - infra_check
 

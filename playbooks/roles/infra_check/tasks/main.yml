@@ -1,0 +1,12 @@
+---
+
+- name: check default | pods are up
+  shell: "oc get pods -n {{item}}"
+  register: oc_get_pods
+  failed_when: "'Terminated' in oc_get_pods.stdout or 'ErrImagePull' in oc_get_pods.stdout or 'Failed' in oc_get_pods.stdout or 'Crash' in oc_get_pods.stdout"
+  with_items:
+    - default
+    - kube-system
+    - openshift-console
+    - openshift-web-console
+    - openshift-sdn
