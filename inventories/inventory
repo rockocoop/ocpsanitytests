@@ -1,6 +1,7 @@
 [all:vars]
 ocpadmin=admin
 ocpadminpass=redhat
+appsdomain: laptop.modtest.com
 
 [masters]
 allinonevm   ansible_ssh_host=10.0.0.191
