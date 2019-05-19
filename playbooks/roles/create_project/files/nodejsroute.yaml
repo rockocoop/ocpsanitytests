@@ -1,0 +1,18 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: "true"
+  labels:
+    app: nodejs-mongodb-example
+    template: nodejs-mongodb-example
+    template.openshift.io/template-instance-owner: fd78d1c2-7a1d-11e9-9f4c-525400a64696
+  name: nodejs-mongodb-example
+  namespace: testing
+spec:
+  host: nodejs-mongodb-example-testing.laptop.modtest.com
+  to:
+    kind: Service
+    name: nodejs-mongodb-example
+    weight: 100
+  wildcardPolicy: None

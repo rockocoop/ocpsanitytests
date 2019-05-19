@@ -20,14 +20,29 @@
     src: roles/create_project/files/nodejs-mongodb-example-parameterssecret.yaml
     state: present
 
-- name: deploy application
+- name: deploy application | deploy mongodb
   openshift_raw:
     src: roles/create_project/files/mongodb.yaml
     state: present
-
-- name: deploy application
+ 
+- name: deploy application | deploy nodejs
   openshift_raw:
     src: roles/create_project/files/nodejs-mongodb-example.yaml
+    state: present
+
+- name: deploy application | create mongodb service
+  openshift_raw:
+    src: roles/create_project/files/mongodbsvc.yaml
+    state: present
+
+- name: deploy application | create nodejs service
+  openshift_raw:
+    src: roles/create_project/files/nodejssvc.yaml
+    state: present
+
+- name: deploy application | create route
+  openshift_raw:
+    src: roles/create_project/files/nodejssvc.yaml
     state: present
 
 #- name: check | pvc created
@@ -40,7 +55,7 @@
   delay: 2
 
 - name: check | pods are up
-  shell: "oc get pods -n testing |grep -i nodejs-mongodb-example-2|grep -i Running"
+  shell: "oc get pods -n testing |grep -i nodejs-mongodb-example|grep -i Running"
   register: oc_get_pods
   until: "'Running' in oc_get_pods.stdout"
   retries: 20
