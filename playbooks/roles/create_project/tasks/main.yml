@@ -69,9 +69,6 @@
   retries: 20
   delay: 2
 
-
-
-
 - name: Delete a project
   openshift_raw:
     api_version: v1
