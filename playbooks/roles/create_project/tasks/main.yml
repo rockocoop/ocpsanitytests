@@ -42,7 +42,7 @@
 
 - name: deploy application | create route
   openshift_raw:
-    src: roles/create_project/files/nodejssvc.yaml
+    src: roles/create_project/files/nodejsroute.yaml
     state: present
 
 #- name: check | pvc created
