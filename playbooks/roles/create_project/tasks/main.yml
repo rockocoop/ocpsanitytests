@@ -64,6 +64,13 @@
 - name: check | app answers via router
   uri:
     url: http://nodejs-mongodb-example-testing.{{appsdomain}}
+  register: uri_check
+  until: "'OK' in uri_check.msg"
+  retries: 20
+  delay: 2
+
+
+
 
 - name: Delete a project
   openshift_raw:
