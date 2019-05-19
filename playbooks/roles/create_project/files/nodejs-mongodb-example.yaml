@@ -1,0 +1,96 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: nodejs-mongodb-example
+    template: nodejs-mongodb-example
+    template.openshift.io/template-instance-owner: 048f8900-7a15-11e9-9f4c-525400a64696
+  name: nodejs-mongodb-example
+  namespace: testing
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    name: nodejs-mongodb-example
+  strategy:
+    activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: nodejs-mongodb-example
+      name: nodejs-mongodb-example
+    spec:
+      containers:
+      - env:
+        - name: DATABASE_SERVICE_NAME
+          value: mongodb
+        - name: MONGODB_USER
+          valueFrom:
+            secretKeyRef:
+              key: database-user
+              name: nodejs-mongodb-example
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: database-password
+              name: nodejs-mongodb-example
+        - name: MONGODB_DATABASE
+          value: sampledb
+        - name: MONGODB_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: database-admin-password
+              name: nodejs-mongodb-example
+        image: docker-registry.default.svc:5000/tests/nodejs-mongodb-example@sha256:a754a618940faca081e3bec262ce36979843189349cc6b02398a11f2d0a6749b
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+        name: nodejs-mongodb-example
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+        resources:
+          limits:
+            memory: 512Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - nodejs-mongodb-example
+      from:
+        kind: ImageStreamTag
+        name: nodejs-mongodb-example:latest
+        namespace: tests
+    type: ImageChange
+  - type: ConfigChange

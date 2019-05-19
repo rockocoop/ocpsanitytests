@@ -10,6 +10,46 @@
     kubeconfig: "../kubeconfig"
     state: present
 
+- name: deploy application | create secret
+  openshift_raw:
+    src: roles/create_project/files/nodejs-mongodb-example-secret.yaml
+    state: present
+
+- name: deploy application | create secret
+  openshift_raw:
+    src: roles/create_project/files/nodejs-mongodb-example-parameterssecret.yaml
+    state: present
+
+- name: deploy application
+  openshift_raw:
+    src: roles/create_project/files/mongodb.yaml
+    state: present
+
+- name: deploy application
+  openshift_raw:
+    src: roles/create_project/files/nodejs-mongodb-example.yaml
+    state: present
+
+#- name: check | pvc created
+
+- name: check | pods are up
+  shell: "oc get pods -n testing |grep -i mongodb-1|grep -i Running"
+  register: oc_get_pods
+  until: "'Running' in oc_get_pods.stdout"
+  retries: 20
+  delay: 2
+
+- name: check | pods are up
+  shell: "oc get pods -n testing |grep -i nodejs-mongodb-example-2|grep -i Running"
+  register: oc_get_pods
+  until: "'Running' in oc_get_pods.stdout"
+  retries: 20
+  delay: 2
+
+- name: check | app answers via router
+  uri:
+    url: http://nodejs-mongodb-example-testing.{{appsdomain}}
+
 - name: Delete a project
   openshift_raw:
     api_version: v1

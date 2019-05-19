@@ -1,0 +1,101 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: nodejs-mongodb-example
+    template: nodejs-mongodb-example
+    template.openshift.io/template-instance-owner: 048f8900-7a15-11e9-9f4c-525400a64696
+  name: mongodb
+  namespace: testing
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    name: mongodb
+  strategy:
+    activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: mongodb
+      name: mongodb
+    spec:
+      containers:
+      - env:
+        - name: MONGODB_USER
+          valueFrom:
+            secretKeyRef:
+              key: database-user
+              name: nodejs-mongodb-example
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: database-password
+              name: nodejs-mongodb-example
+        - name: MONGODB_DATABASE
+          value: sampledb
+        - name: MONGODB_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: database-admin-password
+              name: nodejs-mongodb-example
+        image: docker-registry.default.svc:5000/openshift/mongodb@sha256:f416f1e394815dc513c98adca47cb49ddb2483bb174d7fda3c8c0a3de8bc8054
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 27017
+          timeoutSeconds: 1
+        name: mongodb
+        ports:
+        - containerPort: 27017
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -i
+            - -c
+            - mongo 127.0.0.1:27017/$MONGODB_DATABASE -u $MONGODB_USER -p $MONGODB_PASSWORD
+              --eval="quit()"
+          failureThreshold: 3
+          initialDelaySeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            memory: 512Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/lib/mongodb/data
+          name: mongodb-data
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir: {}
+        name: mongodb-data
+  test: false
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - mongodb
+      from:
+        kind: ImageStreamTag
+        name: mongodb:3.4
+        namespace: openshift
+    type: ImageChange
+  - type: ConfigChange

@@ -1,2 +1,4 @@
 ---
 # vars file for create_project
+
+appsdomain: laptop.modtest.com
