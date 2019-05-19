@@ -1,2 +1,4 @@
 ---
-# vars file for infra_check
+
+openshift_master_cluster_public_hostname: allinonevm.laptop.modtest.com
+openshift_master_api_port: 8443

@@ -1,8 +1,9 @@
 ---
 
-- name: check default | pods are up
+- name: check | pods are up
   shell: "oc get pods -n {{item}}"
   register: oc_get_pods
+  changed_when: 1==2
   failed_when: "'Terminated' in oc_get_pods.stdout or 'ErrImagePull' in oc_get_pods.stdout or 'Failed' in oc_get_pods.stdout or 'Crash' in oc_get_pods.stdout"
   with_items:
     - default
@@ -10,3 +11,31 @@
     - openshift-console
     - openshift-web-console
     - openshift-sdn
+
+- name: check | node status
+  shell: "oc get nodes"
+  register: oc_get_nodes
+  changed_when: 1==2
+  failed_when: "'NotReady' in oc_get_nodes.stdout"
+
+- name: check | router
+  shell: "oc -n default get deploymentconfigs/router"
+  register: router_health
+  changed_when: 1==2
+  failed_when: "'router' not in router_health.stdout"
+
+- name: check | etcd
+  shell: "source ../etcd.conf && etcdctl --cert-file=$ETCD_PEER_CERT_FILE --key-file=$ETCD_PEER_KEY_FILE --ca-file=/etc/etcd/ca.crt --endpoints=$ETCD_LISTEN_CLIENT_URLS cluster-health"
+  register: etcd_health
+  changed_when: 1==2
+  failed_when: "'cluster is healthy' not in etcd_health.stdout"
+
+- name: check | console
+  uri:
+    url: "https://{{openshift_master_cluster_public_hostname}}:{{openshift_master_api_port}}"
+    validate_certs: no
+  register: console_check
+  until: "'OK' in console_check.msg"
+  retries: 3
+  delay: 2
+

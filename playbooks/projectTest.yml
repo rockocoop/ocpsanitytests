@@ -12,6 +12,13 @@
       dest: ../kubeconfig
       flat: yes      
 
+  - name: copy etcd.conf
+    fetch:
+      src: /etc/etcd/etcd.conf
+      dest: ../etcd.conf
+      flat: yes
+
+
 - hosts: localhost
   gather_facts: false
   roles:
