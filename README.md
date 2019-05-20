@@ -27,3 +27,4 @@ Checks the following tasks:
 - etcd health
 - console health
 
+hi
