@@ -15,9 +15,9 @@
     src: nodejsis.yaml
     dest: roles/create_project/files/
 
-- name: update is | insert params for postgresql
+- name: update is | insert params for mongodb
   template:
-    src: postgresqlis.yaml
+    src: mongodbis.yaml
     dest: roles/create_project/files/
 
 - name: deploy application | update nodejs is
@@ -25,9 +25,9 @@
     src: roles/create_project/files/nodejsis.yaml
     state: present
 
-- name: deploy application | update postgresql is
+- name: deploy application | update mongodb is
   openshift_raw:
-    src: roles/create_project/files/postgresqlis.yaml
+    src: roles/create_project/files/mongodbis.yaml
     state: present
 
 - name: deploy application | create secret
