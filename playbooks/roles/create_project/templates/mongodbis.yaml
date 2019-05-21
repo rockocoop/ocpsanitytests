@@ -7,7 +7,7 @@ metadata:
   creationTimestamp: null
   generation: 1
   name: mongodb
-  selfLink: /apis/image.openshift.io/v1/namespaces/openshift/imagestreams/mongodb
+  namespace: openshift
 spec:
   lookupPolicy:
     local: false
@@ -139,5 +139,3 @@ spec:
     name: latest
     referencePolicy:
       type: Local
-status:
-  dockerImageRepository: docker-registry.default.svc:5000/mongodb
