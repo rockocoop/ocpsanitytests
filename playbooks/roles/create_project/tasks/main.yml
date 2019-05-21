@@ -10,6 +10,26 @@
     kubeconfig: "../kubeconfig"
     state: present
 
+- name: update is | insert params for nodejs
+  template:
+    src: nodejsis.yaml
+    dest: roles/create_project/files/
+
+- name: update is | insert params for postgresql
+  template:
+    src: postgresqlis.yaml
+    dest: roles/create_project/files/
+
+- name: deploy application | update nodejs is
+  openshift_raw:
+    src: roles/create_project/files/nodejsis.yaml
+    state: present
+
+- name: deploy application | update postgresql is
+  openshift_raw:
+    src: roles/create_project/files/postgresqlis.yaml
+    state: present
+
 - name: deploy application | create secret
   openshift_raw:
     src: roles/create_project/files/nodejs-mongodb-example-secret.yaml
