@@ -4,7 +4,7 @@
   openshift_raw:
     api_version: v1
     kind: Project
-    name: sanitytesting
+    name: {{testproject}}
     kubeconfig: "../kubeconfig"
     state: present
 
@@ -17,6 +17,11 @@
   template:
     src: nginxroute.yaml
     dest: roles/create_project/files/nginxroute.yaml
+
+- name: prepare service yaml
+  template:
+    src: nginxsvc.yaml
+    dest: roles/create_project/files/nginxsvc.yaml
 
 - name: deploy application | deploy nginx deploymentconfig
   openshift_raw:

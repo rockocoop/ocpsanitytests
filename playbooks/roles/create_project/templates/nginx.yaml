@@ -4,7 +4,7 @@ metadata:
   labels:
     app: nginx
   name: nginx
-  namespace: sanitytesting
+  namespace: {{testproject}}
 spec:
   replicas: 1
   template:
