@@ -48,7 +48,7 @@
   until: "'Running' in oc_get_pods.stdout"
   retries: 60
   delay: 2
-  delegate_to: {{groups['masters'] | first}}
+  delegate_to: "{{groups['masters'] | first}}"
 
 - name: check | app answers via router
   uri:
