@@ -27,6 +27,7 @@
 
 - hosts: masters
   gather_facts: false
+  serial: 1
   roles:
     - restart_nodes 
 
