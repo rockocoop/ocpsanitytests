@@ -5,20 +5,8 @@
     api_version: v1
     kind: Project
     name: testing
-#    username: "{{ '{{ocpadmin}}' | b64encode }}"
-#    password: "{{ '{{ocpadminpass}}' | b64encode }}"
     kubeconfig: "../kubeconfig"
     state: present
-
-- name: update is | insert params for nodejs
-  template:
-    src: nodejsis.yaml
-    dest: roles/create_project/files/
-
-- name: update is | insert params for mongodb
-  template:
-    src: mongodbis.yaml
-    dest: roles/create_project/files/
 
 - name: deploy application | update nodejs is
   openshift_raw:
@@ -26,73 +14,34 @@
     state: present
     kubeconfig: "../kubeconfig"
 
-- name: deploy application | update mongodb is
+- name: deploy application | deploy nginx
   openshift_raw:
-    src: roles/create_project/files/mongodbis.yaml
+    src: roles/create_project/files/nginx.yaml
     state: present
     kubeconfig: "../kubeconfig"
 
-- name: deploy application | create secret
+- name: deploy application | create nginx service
   openshift_raw:
-    src: roles/create_project/files/nodejs-mongodb-example-secret.yaml
+    src: roles/create_project/files/nginxsvc.yaml
     state: present
     kubeconfig: "../kubeconfig"
 
-- name: deploy application | create secret
+- name: deploy application | create route for nginx
   openshift_raw:
-    src: roles/create_project/files/nodejs-mongodb-example-parameterssecret.yaml
+    src: roles/create_project/files/nginxroute.yaml
     state: present
     kubeconfig: "../kubeconfig"
-
-- name: deploy application | deploy mongodb
-  openshift_raw:
-    src: roles/create_project/files/mongodb.yaml
-    state: present
-    kubeconfig: "../kubeconfig"
- 
-- name: deploy application | deploy nodejs
-  openshift_raw:
-    src: roles/create_project/files/nodejs-mongodb-example.yaml
-    state: present
-    kubeconfig: "../kubeconfig"
-
-- name: deploy application | create mongodb service
-  openshift_raw:
-    src: roles/create_project/files/mongodbsvc.yaml
-    state: present
-    kubeconfig: "../kubeconfig"
-
-- name: deploy application | create nodejs service
-  openshift_raw:
-    src: roles/create_project/files/nodejssvc.yaml
-    state: present
-    kubeconfig: "../kubeconfig"
-
-- name: deploy application | create route
-  openshift_raw:
-    src: roles/create_project/files/nodejsroute.yaml
-    state: present
-    kubeconfig: "../kubeconfig"
-
-#- name: check | pvc created
 
 - name: check | pods are up
-  shell: "oc get pods -n testing |grep -i mongodb-1|grep -i Running"
+  shell: "oc get pods -n testing |grep -i nginx|grep -i Running"
   register: oc_get_pods
   until: "'Running' in oc_get_pods.stdout"
-  retries: 20
-  delay: 2
-
-- name: check | pods are up
-  shell: "oc get pods -n testing |grep -i nodejs-mongodb-example|grep -i Running"
-  register: oc_get_pods
-  until: "'Running' in oc_get_pods.stdout"
-  retries: 20
+  retries: 60
   delay: 2
 
 - name: check | app answers via router
   uri:
-    url: http://nodejs-mongodb-example-testing.{{appsdomain}}
+    url: http://nginx-testing.{{appsdomain}}
   register: uri_check
   until: "'OK' in uri_check.msg"
   retries: 20
@@ -103,8 +52,6 @@
     api_version: v1
     kind: Project
     name: testing
-    username: "{{ '{{ocpadmin}}' | b64encode }}"
-    password: "{{ '{{ocpadminpass}}' | b64encode }}"
     kubeconfig: "../kubeconfig"
     state: absent
     kubeconfig: "../kubeconfig"

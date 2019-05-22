@@ -5,18 +5,18 @@ metadata:
     description: Exposes and load balances the application pods
     service.alpha.openshift.io/dependencies: '[{"name": "mongodb", "kind": "Service"}]'
   labels:
-    app: nodejs-mongodb-example
-    template: nodejs-mongodb-example
+    app: nginx
+    template: nginx
     template.openshift.io/template-instance-owner: fd78d1c2-7a1d-11e9-9f4c-525400a64696
-  name: nodejs-mongodb-example
+  name: nginx
   namespace: testing
 spec:
   ports:
   - name: web
-    port: 8080
+    port: 80
     protocol: TCP
-    targetPort: 8080
+    targetPort: 80
   selector:
-    name: nodejs-mongodb-example
+    name: nginx
   sessionAffinity: None
   type: ClusterIP

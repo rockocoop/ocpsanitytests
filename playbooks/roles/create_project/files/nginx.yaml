@@ -2,16 +2,16 @@ apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
   labels:
-    app: nodejs-mongodb-example
-    template: nodejs-mongodb-example
+    app: nginx
+    template: nginx
     template.openshift.io/template-instance-owner: 048f8900-7a15-11e9-9f4c-525400a64696
-  name: nodejs-mongodb-example
+  name: nginx
   namespace: testing
 spec:
   replicas: 1
   revisionHistoryLimit: 10
   selector:
-    name: nodejs-mongodb-example
+    name: nginx
   strategy:
     activeDeadlineSeconds: 21600
     recreateParams:
@@ -22,51 +22,31 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        name: nodejs-mongodb-example
-      name: nodejs-mongodb-example
+        name: nginx
+      name: nginx
     spec:
       containers:
-      - env:
-        - name: DATABASE_SERVICE_NAME
-          value: mongodb
-        - name: MONGODB_USER
-          valueFrom:
-            secretKeyRef:
-              key: database-user
-              name: nodejs-mongodb-example
-        - name: MONGODB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: database-password
-              name: nodejs-mongodb-example
-        - name: MONGODB_DATABASE
-          value: sampledb
-        - name: MONGODB_ADMIN_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: database-admin-password
-              name: nodejs-mongodb-example
-        image: docker-registry.default.svc:5000/tests/nodejs-mongodb-example@sha256:a754a618940faca081e3bec262ce36979843189349cc6b02398a11f2d0a6749b
+        image: {{localregistry}}/openshift3/nginx:latest
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
           httpGet:
             path: /
-            port: 8080
+            port: 80
             scheme: HTTP
           initialDelaySeconds: 30
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 3
-        name: nodejs-mongodb-example
+        name: nginx
         ports:
-        - containerPort: 8080
+        - containerPort: 80
           protocol: TCP
         readinessProbe:
           failureThreshold: 3
           httpGet:
             path: /
-            port: 8080
+            port: 80
             scheme: HTTP
           initialDelaySeconds: 3
           periodSeconds: 10
