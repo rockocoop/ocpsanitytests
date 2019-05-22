@@ -1,6 +1,6 @@
 ---
 
-- name: check | pods are up
+- name: check | infrastructure pods are up
   shell: "oc get pods -n {{item}}"
   register: oc_get_pods
   changed_when: 1==2
@@ -11,6 +11,12 @@
     - openshift-console
     - openshift-web-console
     - openshift-sdn
+
+- name: check | all pods in all projects are running
+  shell: "oc get pods --all-namespaces"
+  register: oc_get_pods
+  changed_when: 1==2
+  failed_when: "'Terminated' in oc_get_pods.stdout or 'ErrImagePull' in oc_get_pods.stdout or 'Failed' in oc_get_pods.stdout or 'Crash' in oc_get_pods.stdout"
 
 - name: check | node status
   shell: "oc get nodes"

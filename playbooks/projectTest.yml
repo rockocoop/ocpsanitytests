@@ -25,3 +25,8 @@
     - create_project
     - infra_check
 
+- hosts: masters
+  gather_facts: false
+  roles:
+    - restart_nodes 
+
