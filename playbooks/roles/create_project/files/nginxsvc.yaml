@@ -6,6 +6,7 @@ metadata:
   name: nginx
   namespace: sanitytesting
 spec:
+  type: LoadBalancer
   ports:
   - name: web
     port: 80
@@ -14,4 +15,3 @@ spec:
   selector:
     name: nginx
   sessionAffinity: None
-  type: ClusterIP
