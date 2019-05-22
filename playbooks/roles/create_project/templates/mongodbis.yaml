@@ -85,7 +85,7 @@ spec:
       version: "3.4"
     from:
       kind: DockerImage
-      name: {{localregistry}}/rhscl/mongodb-34-rhel7:latest
+      name: {{localregistry}}/openshift3/mongodb-34-rhel7:latest
     generation: 1
 {% if insecure == True %}
     importPolicy:
