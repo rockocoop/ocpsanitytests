@@ -12,7 +12,7 @@ Install pip and openshift module and OCP oc client:
 
 The following image must be available on a local insecure repository as follows:
 
-<registryIP:Port>/openshift3/nginx:latest
+    <registryIP:Port>/openshift3/nginx:latest
 
 
 Summary
