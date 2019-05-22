@@ -1,65 +1,43 @@
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: "v1"
+kind: "DeploymentConfig"
 metadata:
   labels:
     app: nginx
-    template: nginx
-    template.openshift.io/template-instance-owner: 048f8900-7a15-11e9-9f4c-525400a64696
   name: nginx
-  namespace: sanitytesting
 spec:
   replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    name: nginx
-  strategy:
-    activeDeadlineSeconds: 21600
-    recreateParams:
-      timeoutSeconds: 600
-    resources: {}
-    type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        name: nginx
-      name: nginx
+        app: nginx
     spec:
       containers:
-        image: {{localregistry}}/openshift3/nginx:latest
-        imagePullPolicy: IfNotPresent
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /
-            port: 80
-            scheme: HTTP
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 3
-        name: nginx
+      - name: nginx
+        image: {{localregistry}}/openshift3/nginx
         ports:
-        - containerPort: 80
-          protocol: TCP
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /
-            port: 80
-            scheme: HTTP
-          initialDelaySeconds: 3
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 3
-        resources:
-          limits:
-            memory: 512Mi
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext: {}
-      terminationGracePeriodSeconds: 30
-  test: false
+        - name: web
+          containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx
+          readOnly: true
+          name: nginx-conf
+        - mountPath: /var/log/nginx
+          name: log
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: nginx-conf
+          items:
+            - key: nginx.conf
+              path: nginx.conf
+            - key: virtualhost.conf
+              path: virtualhost/virtualhost.conf
+      - name: log
+        emptyDir: {}
+  triggers:
+  - type: ConfigChange
+  strategy:
+    type: Rolling
+  paused: false
+  revisionHistoryLimit: 2
+  minReadySeconds: 0
