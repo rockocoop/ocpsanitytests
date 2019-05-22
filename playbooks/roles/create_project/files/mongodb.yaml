@@ -88,14 +88,3 @@ spec:
       - emptyDir: {}
         name: mongodb-data
   test: false
-  triggers:
-  - imageChangeParams:
-      automatic: true
-      containerNames:
-      - mongodb
-      from:
-        kind: ImageStreamTag
-        name: mongodb:3.4
-        namespace: openshift
-    type: ImageChange
-  - type: ConfigChange
