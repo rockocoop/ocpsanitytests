@@ -31,4 +31,13 @@ Checks the following tasks:
 - etcd health
 - console health
 
+restart_nodes
+
+Performs the following for each node in the cluster:
+- marks node as unschedulable
+- drains node
+- reboots node 
+- checks node rejoins the cluster and is ready
+- marks node as schedulable
+
 
