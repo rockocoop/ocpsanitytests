@@ -39,7 +39,7 @@
 
 - name: check | console
   uri:
-    url: "https://{{openshift_master_cluster_public_hostname}}:{{openshift_master_api_port}}"
+    url: "https://{{openshift_console_api}}"
     validate_certs: no
   register: console_check
   until: "'OK' in console_check.msg"
