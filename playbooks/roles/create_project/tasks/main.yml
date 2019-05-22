@@ -5,8 +5,8 @@
     api_version: v1
     kind: Project
     name: testing
-    username: "{{ '{{ocpadmin}}' | b64encode }}"
-    password: "{{ '{{ocpadminpass}}' | b64encode }}"
+#    username: "{{ '{{ocpadmin}}' | b64encode }}"
+#    password: "{{ '{{ocpadminpass}}' | b64encode }}"
     kubeconfig: "../kubeconfig"
     state: present
 
@@ -24,46 +24,55 @@
   openshift_raw:
     src: roles/create_project/files/nodejsis.yaml
     state: present
+    kubeconfig: "../kubeconfig"
 
 - name: deploy application | update mongodb is
   openshift_raw:
     src: roles/create_project/files/mongodbis.yaml
     state: present
+    kubeconfig: "../kubeconfig"
 
 - name: deploy application | create secret
   openshift_raw:
     src: roles/create_project/files/nodejs-mongodb-example-secret.yaml
     state: present
+    kubeconfig: "../kubeconfig"
 
 - name: deploy application | create secret
   openshift_raw:
     src: roles/create_project/files/nodejs-mongodb-example-parameterssecret.yaml
     state: present
+    kubeconfig: "../kubeconfig"
 
 - name: deploy application | deploy mongodb
   openshift_raw:
     src: roles/create_project/files/mongodb.yaml
     state: present
+    kubeconfig: "../kubeconfig"
  
 - name: deploy application | deploy nodejs
   openshift_raw:
     src: roles/create_project/files/nodejs-mongodb-example.yaml
     state: present
+    kubeconfig: "../kubeconfig"
 
 - name: deploy application | create mongodb service
   openshift_raw:
     src: roles/create_project/files/mongodbsvc.yaml
     state: present
+    kubeconfig: "../kubeconfig"
 
 - name: deploy application | create nodejs service
   openshift_raw:
     src: roles/create_project/files/nodejssvc.yaml
     state: present
+    kubeconfig: "../kubeconfig"
 
 - name: deploy application | create route
   openshift_raw:
     src: roles/create_project/files/nodejsroute.yaml
     state: present
+    kubeconfig: "../kubeconfig"
 
 #- name: check | pvc created
 
@@ -98,3 +107,4 @@
     password: "{{ '{{ocpadminpass}}' | b64encode }}"
     kubeconfig: "../kubeconfig"
     state: absent
+    kubeconfig: "../kubeconfig"
