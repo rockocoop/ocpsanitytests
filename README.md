@@ -2,7 +2,8 @@
 ansible project for testing general OCP functionality
 
 Prerequisites
-install pip and openshift module
+Install pip and openshift module:
+
     ``yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm)``
     ``yum install python-pip``
     ``pip install --upgrade setuptools``
@@ -13,6 +14,7 @@ Summary
 Project contains the following roles at present
 
 'create_project'
+
 Performs the following tasks:
 - create project
 - deploy mongodb and nodejs
@@ -20,6 +22,7 @@ Performs the following tasks:
 - tears down the project
 
 'infra_check'
+
 Checks the following tasks:
 - pods are running in the main OCP projects
 - router
