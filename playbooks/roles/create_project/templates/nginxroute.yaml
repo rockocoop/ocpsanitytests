@@ -8,7 +8,7 @@ metadata:
   name: nginx
   namespace: {{testproject}}
 spec:
-  host: nginx-sanitytesting.{{ocpappsdomain}}
+  host: nginx-{{testproject}}.{{ocpappsdomain}}
   to:
     kind: Service
     name: nginx
