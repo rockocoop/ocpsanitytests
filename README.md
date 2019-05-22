@@ -1,14 +1,15 @@
 # ocpsanitytests
 ansible project for testing general OCP functionality
 
-``link considered for base of design:``
+Prerequisites
+``install pip and openshift module``
+    yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm)
+    yum install python-pip
+    pip install --upgrade setuptools
+    pip install openshift
 
-``https://docs.openshift.com/container-platform/3.11/day_two_guide/environment_health_checks.html``
 
-``requires installing pip install openshift.  if install fails, update pip install --upgrade setuptools.``
-
-
-
+Summary
 `` Project contains the following roles at present ``
 
 `` create_project ``
@@ -27,4 +28,4 @@ Checks the following tasks:
 - etcd health
 - console health
 
-hi
+
