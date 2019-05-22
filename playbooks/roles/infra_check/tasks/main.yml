@@ -16,7 +16,7 @@
   shell: "oc --config=../kubeconfig get pods --all-namespaces"
   register: oc_get_pods
   changed_when: 1==2
-  failed_when: "'Terminated' in oc_get_pods.stdout or 'ErrImagePull' in oc_get_pods.stdout or 'Failed' in oc_get_pods.stdout or 'Crash' in oc_get_pods.stdout"
+  failed_when: "'Terminated' in oc_get_pods.stdout or 'Err' in oc_get_pods.stdout or 'Failed' in oc_get_pods.stdout or 'Crash' in oc_get_pods.stdout"
 
 - name: check | node status
   shell: "oc --config=../kubeconfig get nodes"
