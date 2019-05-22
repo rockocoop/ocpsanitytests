@@ -7,7 +7,7 @@
   failed_when: "'SchedulingDisabled' not in oc_get_node.stdout"
   delegate_to: localhost
 
-- name: node check | see if pods are running on node
+- name: node check | drain pods from node
   shell: "oc --config=../kubeconfig adm drain {{hostname}} --delete-local-data --ignore-daemonsets  --force"
   register: oc_get_node
   changed_when: 1==2
