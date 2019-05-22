@@ -11,7 +11,8 @@ Install pip and openshift module:
 
 
 Summary
-Project contains the following roles at present
+
+Project contains the following roles at present:
 
 create_project
 
