@@ -8,11 +8,10 @@
     kubeconfig: "../kubeconfig"
     state: present
 
-- name: deploy application | update nodejs is
-  openshift_raw:
-    src: roles/create_project/files/nodejsis.yaml
-    state: present
-    kubeconfig: "../kubeconfig"
+- name: prepare nginx yaml
+  template:
+    src: nginx.yaml
+    dest: roles/create_project/files/nginx.yaml
 
 - name: deploy application | deploy nginx
   openshift_raw:
