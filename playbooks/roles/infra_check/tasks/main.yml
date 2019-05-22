@@ -1,10 +1,10 @@
 ---
 
 - name: check | infrastructure pods are up
-  shell: "oc get pods -n {{item}}"
-  register: oc_get_pods
+  shell: "oc --config=../kubeconfig get pods -n {{item}}"
+  register: oc --config=../kubeconfig_get_pods
   changed_when: 1==2
-  failed_when: "'Terminated' in oc_get_pods.stdout or 'ErrImagePull' in oc_get_pods.stdout or 'Failed' in oc_get_pods.stdout or 'Crash' in oc_get_pods.stdout"
+  failed_when: "'Terminated' in oc --config=../kubeconfig_get_pods.stdout or 'ErrImagePull' in oc --config=../kubeconfig_get_pods.stdout or 'Failed' in oc --config=../kubeconfig_get_pods.stdout or 'Crash' in oc --config=../kubeconfig_get_pods.stdout"
   with_items:
     - default
     - kube-system
@@ -13,19 +13,19 @@
     - openshift-sdn
 
 - name: check | all pods in all projects are running
-  shell: "oc get pods --all-namespaces"
-  register: oc_get_pods
+  shell: "oc --config=../kubeconfig get pods --all-namespaces"
+  register: oc --config=../kubeconfig_get_pods
   changed_when: 1==2
-  failed_when: "'Terminated' in oc_get_pods.stdout or 'ErrImagePull' in oc_get_pods.stdout or 'Failed' in oc_get_pods.stdout or 'Crash' in oc_get_pods.stdout"
+  failed_when: "'Terminated' in oc --config=../kubeconfig_get_pods.stdout or 'ErrImagePull' in oc --config=../kubeconfig_get_pods.stdout or 'Failed' in oc --config=../kubeconfig_get_pods.stdout or 'Crash' in oc --config=../kubeconfig_get_pods.stdout"
 
 - name: check | node status
-  shell: "oc get nodes"
-  register: oc_get_nodes
+  shell: "oc --config=../kubeconfig get nodes"
+  register: oc --config=../kubeconfig_get_nodes
   changed_when: 1==2
-  failed_when: "'NotReady' in oc_get_nodes.stdout"
+  failed_when: "'NotReady' in oc --config=../kubeconfig_get_nodes.stdout"
 
 - name: check | router
-  shell: "oc -n default get deploymentconfigs/router"
+  shell: "oc --config=../kubeconfig -n default get deploymentconfigs/router"
   register: router_health
   changed_when: 1==2
   failed_when: "'router' not in router_health.stdout"

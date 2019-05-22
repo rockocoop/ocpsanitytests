@@ -25,7 +25,7 @@
     - create_project
     - infra_check
 
-- hosts: masters
+- hosts: nodes
   gather_facts: false
   serial: 1
   roles:
