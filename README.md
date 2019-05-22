@@ -10,6 +10,10 @@ Install pip and openshift module and OCP oc client:
     pip install openshift
     yum install atomic-openshift-clients
 
+The following image must be available on a local insecure repository as follows:
+
+    <registryIP:Port>/openshift3/nginx:latest
+
 
 Summary
 
@@ -19,14 +23,15 @@ create_project
 
 Performs the following tasks:
 - create project
-- deploy mongodb and nodejs
-- checks that pods are up and nodejs answers via router
+- deploy nginx
+- checks that pods are up nginx answers via router
 - tears down the project
 
 infra_check
 
 Checks the following tasks:
 - pods are running in the main OCP projects
+- checks for failed pods in all projects in the cluster
 - router
 - node status 
 - etcd health
