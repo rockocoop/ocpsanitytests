@@ -19,20 +19,9 @@ spec:
         - name: web
           containerPort: 80
         volumeMounts:
-        - mountPath: /etc/nginx
-          readOnly: true
-          name: nginx-conf
         - mountPath: /var/log/nginx
           name: log
       volumes:
-      - name: nginx-conf
-        configMap:
-          name: nginx-conf
-          items:
-            - key: nginx.conf
-              path: nginx.conf
-            - key: virtualhost.conf
-              path: virtualhost/virtualhost.conf
       - name: log
         emptyDir: {}
   triggers:

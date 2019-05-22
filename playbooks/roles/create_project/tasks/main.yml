@@ -18,12 +18,6 @@
     src: nginxroute.yaml
     dest: roles/create_project/files/nginxroute.yaml
 
-- name: deploy application | deploy nginx configmap
-  openshift_raw:
-    src: roles/create_project/files/nginxcm.yaml
-    state: present
-    kubeconfig: "../kubeconfig"
-
 - name: deploy application | deploy nginx deploymentconfig
   openshift_raw:
     src: roles/create_project/files/nginx.yaml
