@@ -45,7 +45,7 @@
 - name: check | pods are up
   shell: "oc get pods -n sanitytesting |grep -i nginx|grep -i Running"
   register: oc_get_pods
-  until: "'Running' in oc_get_pods.stdout"
+  until: "'Running' in oc_get_pods.stdout and 'deploy' not in oc_get_pods.stdout"
   retries: 60
   delay: 2
   delegate_to: "{{groups['masters'] | first}}"
