@@ -65,4 +65,3 @@
     name: sanitytesting
     kubeconfig: "../kubeconfig"
     state: absent
-    kubeconfig: "../kubeconfig"
