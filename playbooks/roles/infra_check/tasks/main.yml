@@ -2,7 +2,7 @@
 
 - name: check | infrastructure pods are up
   shell: "oc --config=../kubeconfig get pods -n {{item}}"
-  register: oc --config=../kubeconfig_get_pods
+  register: oc_get_pods
   changed_when: 1==2
   failed_when: "'Terminated' in oc_get_pods.stdout or 'ErrImagePull' in oc_get_pods.stdout or 'Failed' in oc_get_pods.stdout or 'Crash' in oc_get_pods.stdout"
   with_items:
@@ -14,13 +14,13 @@
 
 - name: check | all pods in all projects are running
   shell: "oc --config=../kubeconfig get pods --all-namespaces"
-  register: oc --config=../kubeconfig_get_pods
+  register: oc_get_pods
   changed_when: 1==2
   failed_when: "'Terminated' in oc_get_pods.stdout or 'ErrImagePull' in oc_get_pods.stdout or 'Failed' in oc_get_pods.stdout or 'Crash' in oc_get_pods.stdout"
 
 - name: check | node status
   shell: "oc --config=../kubeconfig get nodes"
-  register: oc --config=../kubeconfig_get_nodes
+  register: oc_get_nodes
   changed_when: 1==2
   failed_when: "'NotReady' in oc_get_nodes.stdout"
 
