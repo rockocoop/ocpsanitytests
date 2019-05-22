@@ -4,7 +4,7 @@
   openshift_raw:
     api_version: v1
     kind: Project
-    name: {{testproject}}
+    name: "{{testproject}}"
     kubeconfig: "../kubeconfig"
     state: present
 
