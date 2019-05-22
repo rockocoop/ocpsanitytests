@@ -6,7 +6,7 @@ metadata:
     template: nginx
     template.openshift.io/template-instance-owner: 048f8900-7a15-11e9-9f4c-525400a64696
   name: nginx
-  namespace: testing
+  namespace: sanitytesting
 spec:
   replicas: 1
   revisionHistoryLimit: 10

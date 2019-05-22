@@ -4,7 +4,7 @@
   openshift_raw:
     api_version: v1
     kind: Project
-    name: testing
+    name: sanitytesting
     kubeconfig: "../kubeconfig"
     state: present
 
@@ -33,7 +33,7 @@
     kubeconfig: "../kubeconfig"
 
 - name: check | pods are up
-  shell: "oc get pods -n testing |grep -i nginx|grep -i Running"
+  shell: "oc get pods -n sanitytesting |grep -i nginx|grep -i Running"
   register: oc_get_pods
   until: "'Running' in oc_get_pods.stdout"
   retries: 60
@@ -41,7 +41,7 @@
 
 - name: check | app answers via router
   uri:
-    url: http://nginx-testing.{{appsdomain}}
+    url: http://nginx-sanitytesting.{{appsdomain}}
   register: uri_check
   until: "'OK' in uri_check.msg"
   retries: 20
@@ -51,7 +51,7 @@
   openshift_raw:
     api_version: v1
     kind: Project
-    name: testing
+    name: sanitytesting
     kubeconfig: "../kubeconfig"
     state: absent
     kubeconfig: "../kubeconfig"
