@@ -20,7 +20,7 @@
 
 - name: deploy application | deploy nginx configmap
   openshift_raw:
-    src: roles/create_project/files/nginx.yaml
+    src: roles/create_project/files/nginxcm.yaml
     state: present
     kubeconfig: "../kubeconfig"
 
@@ -48,7 +48,7 @@
   until: "'Running' in oc_get_pods.stdout"
   retries: 60
   delay: 2
-  delegate_to: groups[masters | first] 
+  delegate_to: {{groups['masters'] | first}}
 
 - name: check | app answers via router
   uri:
