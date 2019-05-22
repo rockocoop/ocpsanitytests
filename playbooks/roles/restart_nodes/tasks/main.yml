@@ -1,7 +1,7 @@
 ---
 
 - name: node check | set node as unscheduable
-  shell: "oc --config=../kubeconfig manage-node {{hostname}} --schedulable=false"
+  shell: "oc --config=../kubeconfig adm manage-node {{hostname}} --schedulable=false"
   register: oc_get_node
   changed_when: 1==2
   failed_when: "'SchedulingDisabled' not in oc_get_node.stdout"
@@ -26,7 +26,7 @@
   delegate_to: localhost
 
 - name: node check | set node as scheduable
-  shell: "oc --config=../kubeconfig manage-node {{hostname}} --schedulable=true"
+  shell: "oc --config=../kubeconfig adm manage-node {{hostname}} --schedulable=true"
   register: oc_node_up
   changed_when: 1==2
   failed_when: "'SchedulingDisabled' in oc_node_up.stdout"
