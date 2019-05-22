@@ -18,6 +18,12 @@
       dest: ../etcd.conf
       flat: yes
 
+  - name: prepare admin user
+    shell: oc adm policy add-scc-to-user privileged system:serviceaccount:default:default
+
+  - name: prepare admin user
+    shell: oc adm policy add-scc-to-group anyuid system:authenticated
+
 
 - hosts: localhost
   gather_facts: false

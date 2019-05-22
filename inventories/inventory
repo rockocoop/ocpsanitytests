@@ -2,7 +2,7 @@
 ansible_user=root
 ocpadmin=admin
 ocpadminpass=redhat
-appsdomain=laptop.modtest.com
+ocpappsdomain=laptop.modtest.com
 openshift_master_cluster_public_hostname=allinonevm.laptop.modtest.com
 openshift_master_api_port=8443
 localregistry=10.0.0.191

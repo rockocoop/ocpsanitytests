@@ -22,7 +22,7 @@
   shell: "oc --config=../kubeconfig get nodes"
   register: oc --config=../kubeconfig_get_nodes
   changed_when: 1==2
-  failed_when: "'NotReady' in oc --config=../kubeconfig_get_nodes.stdout"
+  failed_when: "'NotReady' in oc_get_nodes.stdout"
 
 - name: check | router
   shell: "oc --config=../kubeconfig -n default get deploymentconfigs/router"

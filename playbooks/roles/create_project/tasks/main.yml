@@ -52,7 +52,7 @@
 
 - name: check | app answers via router
   uri:
-    url: http://nginx-sanitytesting.{{appsdomain}}
+    url: http://nginx-sanitytesting.{{ocpappsdomain}}
   register: uri_check
   until: "'OK' in uri_check.msg"
   retries: 20
