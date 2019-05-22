@@ -9,7 +9,7 @@ metadata:
     template: nginx
     template.openshift.io/template-instance-owner: fd78d1c2-7a1d-11e9-9f4c-525400a64696
   name: nginx
-  namespace: testing
+  namespace: sanitytesting
 spec:
   ports:
   - name: web
