@@ -1,24 +1,32 @@
 ---
 
-- name: Create a project
+- name: Create test project | check if already exists
+  shell: "oc --config=../kubeconfig get projects"
+  register: proj_exists
+
+- name: Create test project | delete if exists
+  shell: "oc --config=../kubeconfig delete project {{testproject}}" 
+  when: "{{testproject}} in proj_exists.stdout"
+
+- name: Create test project | create the test project
   shell: "oc --config=../kubeconfig new-project {{testproject}}"
 
-- name: prepare nginx yaml
+- name: deploy application | prepare nginx yaml
   template:
     src: nginx.yaml
     dest: roles/create_project/files/nginx.yaml
 
-- name: prepare nginx pvc yaml
+- name: deploy application | prepare nginx pvc yaml
   template:
     src: nginxpvc.yaml
     dest: roles/create_project/files/nginxpvc.yaml
 
-- name: prepare route yaml
+- name: deploy application | prepare route yaml
   template:
     src: nginxroute.yaml
     dest: roles/create_project/files/nginxroute.yaml
 
-- name: prepare service yaml
+- name: deploy application | prepare service yaml
   template:
     src: nginxsvc.yaml
     dest: roles/create_project/files/nginxsvc.yaml
