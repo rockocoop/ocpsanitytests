@@ -6,7 +6,7 @@
 
 - name: Create test project | delete if exists
   shell: "oc --config=../kubeconfig delete project {{testproject}}" 
-  when: '{{testproject}}' in proj_exists.stdout
+  when: "'{{testproject}}' in proj_exists.stdout"
 
 - name: Create test project | create the test project
   shell: "oc --config=../kubeconfig new-project {{testproject}}"
