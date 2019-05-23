@@ -36,9 +36,7 @@
     shell: "oc --config=../kubeconfig get pods --all-namespaces|grep -v Running|grep -v NAMESPACE|grep -v NAME|grep -v READY| grep -v STATUS| grep -v RESTARTS| grep -v AGE"
     changed_when: 1==2
     register: finalstatus
-    until: finalstatus.stdout == '\n'
-    retries: 1
-    delay: 0
+    failed_when: finalstatus.stdout != ""
 
                                          
     
