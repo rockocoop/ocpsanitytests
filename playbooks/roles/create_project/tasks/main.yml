@@ -43,8 +43,14 @@
   delay: 2
   delegate_to: "{{groups['masters'] | first}}"
 
+- name: check | pause for url to be available
+  pause:
+    minute: 1
+
 - name: check | app answers via router
-  shell: curl http://nginx-{{testproject}}.{{ocpappsdomain}}
+  uri:
+    url: http://nginx-{{testproject}}.{{ocpappsdomain}}
+    return_content: yes
   register: uri_check
   until: "'nginx' in uri_check.msg"
   retries: 20
