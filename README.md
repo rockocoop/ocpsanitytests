@@ -58,4 +58,4 @@ The following parameters are needed to run the tests, in addition to a valid OCP
 	openshift_console_api: <master API FQDN and Port>
 	localregistry: <IP and port of local insecure registry where nginx image is kept>
 	testproject: <name of temporary project created for test app>  - default value is "scoobydoo"
-        storageclass: <persistent storage class type> - default is "glusterfs"
+    storageclass: <persistent storage class type> - default is "glusterfs"
