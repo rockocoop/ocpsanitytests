@@ -64,7 +64,7 @@
   uri:
     url: http://nginx-{{testproject}}.{{ocpappsdomain}}
   register: uri_check
-  until: "'OK' in uri_check.msg"
+  until: "'nginx' in uri_check.msg"
   retries: 20
   delay: 2
 
