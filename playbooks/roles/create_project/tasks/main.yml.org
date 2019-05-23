@@ -1,7 +1,12 @@
 ---
 
 - name: Create a project
-  shell: "oc --config=../kubeconfig new-project {{testproject}}"
+  openshift_raw:
+    api_version: v1
+    kind: Project
+    name: "{{testproject}}"
+    kubeconfig: "../kubeconfig"
+    state: present
 
 - name: prepare nginx yaml
   template:
@@ -24,16 +29,28 @@
     dest: roles/create_project/files/nginxsvc.yaml
 
 - name: deploy application | create nginx pvc
-  shell: "oc --config=../kubeconfig create -f roles/create_project/files/nginxpvc.yaml"
+  openshift_raw:
+    src: roles/create_project/files/nginxpvc.yaml
+    state: present
+    kubeconfig: "../kubeconfig"
 
 - name: deploy application | deploy nginx deploymentconfig
-  shell: "oc --config=../kubeconfig create -f roles/create_project/files/nginx.yaml"
+  openshift_raw:
+    src: roles/create_project/files/nginx.yaml
+    state: present
+    kubeconfig: "../kubeconfig"
 
 - name: deploy application | create nginx service
-  shell: "oc --config=../kubeconfig create -f roles/create_project/files/nginxsvc.yaml"
+  openshift_raw:
+    src: roles/create_project/files/nginxsvc.yaml
+    state: present
+    kubeconfig: "../kubeconfig"
 
 - name: deploy application | create route for nginx
-  shell: "oc --config=../kubeconfig create -f roles/create_project/files/nginxroute.yaml"
+  openshift_raw:
+    src: roles/create_project/files/nginxroute.yaml
+    state: present
+    kubeconfig: "../kubeconfig"
 
 - name: check | pods are up
   shell: "oc get pods -n {{testproject}} |grep -i nginx|grep -i Running"
@@ -53,4 +70,9 @@
   delay: 2
 
 - name: Delete a project
-  shell: "oc --config=../kubeconfig delete project {{testproject}}"
+  openshift_raw:
+    api_version: v1
+    kind: Project
+    name: "{{testproject}}"
+    kubeconfig: "../kubeconfig"
+    state: absent
