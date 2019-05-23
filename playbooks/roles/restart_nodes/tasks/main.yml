@@ -1,5 +1,11 @@
 ---
 
+
+- name: node check | check selinux policy
+  selinux:
+    policy: targeted
+    state: enforcing
+
 - name: node check | set node as unscheduable
   shell: "oc --config=../kubeconfig adm manage-node {{hostname}} --schedulable=false"
   register: oc_get_node

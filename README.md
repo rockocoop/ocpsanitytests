@@ -40,10 +40,13 @@ Checks the following tasks:
 restart_nodes
 
 Performs the following for each node in the cluster:
+- checks selinux policy is correct
 - marks node as unschedulable
-- drains node
 - reboots node 
 - checks node rejoins the cluster and is ready
 - marks node as schedulable
+
+
+Once all roles have run, there is a 5 minute delay and then a check is run to see all pods are running
 
 
