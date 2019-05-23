@@ -63,8 +63,9 @@
 - name: check | app answers via router
   uri:
     url: http://nginx-{{testproject}}.{{ocpappsdomain}}
+    status_code: 403
   register: uri_check
-  until: "'nginx' in uri_check.msg"
+  until: "'403' in uri_check.msg"
   retries: 20
   delay: 2
 
