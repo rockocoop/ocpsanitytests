@@ -23,7 +23,8 @@ create_project
 
 Performs the following tasks:
 - create project
-- deploy nginx
+- create persistent storage claim
+- deploy nginx with persistent storage
 - checks that pods are up nginx answers via router
 - tears down the project
 
