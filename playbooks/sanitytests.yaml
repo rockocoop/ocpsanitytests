@@ -45,9 +45,9 @@
   tasks:
 
 
-  - name: Final Check | pause for 3 minutes
+  - name: Final Check | pause for 5 minutes
     pause:
-      minutes: 3
+      minutes: 5
 
   - name: Final Check | Check that all pods returned after tests
     shell: "oc --config=../kubeconfig get pods --all-namespaces|grep -v Running|grep -v NAMESPACE|grep -v NAME|grep -v READY| grep -v STATUS| grep -v RESTARTS| grep -v AGE"
