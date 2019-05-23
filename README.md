@@ -2,12 +2,8 @@
 ansible project for testing general OCP functionality
 
 Prerequisites
-Install pip and openshift module and OCP oc client:
+Install OCP oc client:
 
-    yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-    yum install python-pip
-    pip install --upgrade setuptools
-    pip install openshift
     yum install atomic-openshift-clients
 
 The following image must be available on a local insecure repository as follows:
