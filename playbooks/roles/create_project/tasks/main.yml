@@ -30,7 +30,7 @@
 
 - name: deploy application | create nginx pvc
   openshift_raw:
-    src: roles/create_project/files/nginx.yaml
+    src: roles/create_project/files/nginxpvc.yaml
     state: present
     kubeconfig: "../kubeconfig"
 
