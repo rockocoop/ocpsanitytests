@@ -37,7 +37,7 @@
     changed_when: 1==2
     register: finalstatus
     until: finalstatus.stdout == ""
-    retries: 0
+    retries: 1
     delay: 0
 
                                          
