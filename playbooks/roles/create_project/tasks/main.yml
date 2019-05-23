@@ -51,14 +51,15 @@
   delay: 2
   delegate_to: "{{groups['masters'] | first}}"
 
+- name: pause for 1 minute
+  pause:
+    minutes: 1
+
 - name: check | app answers via router
   uri:
     url: http://nginx-{{testproject}}.{{ocpappsdomain}}
+    status_code: 403
     return_content: yes
-  register: uri_check
-  until: "'nginx' in uri_check.msg"
-  retries: 20
-  delay: 2
 
 - name: Delete a project
   shell: "oc --config=../kubeconfig delete project {{testproject}}"
