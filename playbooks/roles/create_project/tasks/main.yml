@@ -44,11 +44,9 @@
   delegate_to: "{{groups['masters'] | first}}"
 
 - name: check | app answers via router
-  uri:
-    url: http://nginx-{{testproject}}.{{ocpappsdomain}}
-    status_code: 403
+  shell: curl http://nginx-{{testproject}}.{{ocpappsdomain}}
   register: uri_check
-  until: "'403' in uri_check.msg"
+  until: "'nginx' in uri_check.msg"
   retries: 20
   delay: 2
 
