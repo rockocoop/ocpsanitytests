@@ -25,12 +25,25 @@
     shell: oc adm policy add-scc-to-group anyuid system:authenticated
 
 
+- hosts: localhost
+  gather_facts: false
+  roles:
+    - create_project
+    - infra_check
+
+- hosts: nodes
+  gather_facts: false
+  serial: 1
+  roles:
+    - restart_nodes 
+
 
 - hosts: localhost
   gather_facts: false
 
 
   tasks:
+
 
   - pause:
       minutes: 5
@@ -40,7 +53,3 @@
     changed_when: 1==2
     register: finalstatus
     failed_when: finalstatus.stdout != ""
-
-                                         
-    
-
