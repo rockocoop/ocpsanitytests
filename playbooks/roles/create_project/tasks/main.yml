@@ -13,6 +13,11 @@
     src: nginx.yaml
     dest: roles/create_project/files/nginx.yaml
 
+- name: prepare nginx pvc yaml
+  template:
+    src: nginxpvc.yaml
+    dest: roles/create_project/files/nginxpvc.yaml
+
 - name: prepare route yaml
   template:
     src: nginxroute.yaml
@@ -22,6 +27,12 @@
   template:
     src: nginxsvc.yaml
     dest: roles/create_project/files/nginxsvc.yaml
+
+- name: deploy application | create nginx pvc
+  openshift_raw:
+    src: roles/create_project/files/nginx.yaml
+    state: present
+    kubeconfig: "../kubeconfig"
 
 - name: deploy application | deploy nginx deploymentconfig
   openshift_raw:

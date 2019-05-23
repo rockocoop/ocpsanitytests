@@ -19,9 +19,15 @@ spec:
         - name: web
           containerPort: 80
         volumeMounts:
+        - name: {{storageclass}}-vol1
+          mountPath: /usr/share/nginx/html
+          readOnly: false
         - mountPath: /var/log/nginx
           name: log
       volumes:
+      - name: {{storageclass}}-vol1
+         persistentVolumeClaim:
+           claimName: {{storageclass}}-claim
       - name: log
         emptyDir: {}
   triggers:
