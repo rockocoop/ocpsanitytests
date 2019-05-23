@@ -26,8 +26,8 @@ spec:
           name: log
       volumes:
       - name: {{storageclass}}-vol1
-         persistentVolumeClaim:
-           claimName: {{storageclass}}-claim
+        persistentVolumeClaim:
+          claimName: {{storageclass}}-claim
       - name: log
         emptyDir: {}
   triggers:
