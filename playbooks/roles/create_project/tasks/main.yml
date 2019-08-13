@@ -41,6 +41,7 @@
 
 - name: deploy application | create nginx pvc
   shell: "oc --config=../kubeconfig create -f roles/create_project/files/nginxpvc.yaml"
+  when: storageclass is defined
 
 - name: deploy application | deploy nginx deploymentconfig
   shell: "oc --config=../kubeconfig create -f roles/create_project/files/nginx.yaml"
