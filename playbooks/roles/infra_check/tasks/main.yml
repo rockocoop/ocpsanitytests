@@ -36,6 +36,7 @@
   changed_when: 1==2
   failed_when: "'cluster is healthy' not in etcd_health.stdout"
   delegate_to: "{{groups['masters'] | first}}"
+  when: etcdSkip is not defined
 
 - name: check | console
   uri:
