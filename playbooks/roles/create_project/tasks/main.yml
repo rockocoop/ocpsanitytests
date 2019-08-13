@@ -67,8 +67,16 @@
 - name: check | app answers via router
   uri:
     url: http://nginx-{{testproject}}.{{ocpappsdomain}}
+    status_code: 200
+    return_content: yes
+  when: storageclass is not defined
+
+- name: check | app answers via router
+  uri:
+    url: http://nginx-{{testproject}}.{{ocpappsdomain}}
     status_code: 403
     return_content: yes
+  when: storageclass is defined
 
 - name: Delete a project
   shell: "oc --config=../kubeconfig delete project {{testproject}}"
