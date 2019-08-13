@@ -25,6 +25,9 @@ spec:
         - mountPath: /var/log/nginx
           name: log
       volumes:
+      - name: {{storageclass}}-vol1
+        persistentVolumeClaim:
+          claimName: {{storageclass}}-claim
       - name: log
         emptyDir: {}
   triggers:

@@ -15,11 +15,19 @@
   template:
     src: nginx.yaml
     dest: roles/create_project/files/nginx.yaml
+  when: storageclass is not defined
+
+- name: deploy application | prepare nginx yaml
+  template:
+    src: nginx_with_pvc.yaml
+    dest: roles/create_project/files/nginx.yaml
+  when: storageclass is defined
 
 - name: deploy application | prepare nginx pvc yaml
   template:
     src: nginxpvc.yaml
     dest: roles/create_project/files/nginxpvc.yaml
+  when: storageclass is defined
 
 - name: deploy application | prepare route yaml
   template:
