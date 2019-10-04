@@ -2,9 +2,27 @@
 
 - hosts: localhost
   gather_facts: false
+  vars:
+    min_ansible_version: '2.7'
+    commands_needed:
+      - "etcdctl"
+
+  pre_tasks:
+
+    - name: Verify Ansible meets at least version {{ min_ansible_version }}
+      assert:
+        that:
+          - ansible_version.full is version({{ min_ansible_version }}, '>=')
+        msg: "Ansible version is {{ ansible_version.full }}. Minimum required version version is {{ min_ansible_version }}"
+
+    - name: Fail task when commands_needed are not available
+      command: /usr/bin/which {{ item }}
+      register: command_result
+      failed_when: >
+        ("no {{ item }} in" in command_result.stderr)
+      loop: "{{ commands_needed }}"
 
   tasks:
-
 
   - name: copy kubeconfig
     fetch: 
