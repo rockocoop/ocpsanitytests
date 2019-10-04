@@ -10,14 +10,14 @@
   shell:  'echo -e "r /etc/cni/net.d/80-openshift-network.conf\nr /etc/origin/openvswitch/conf.db"  > /usr/lib/tmpfiles.d/cleanup-cni.conf'
 
 - name: node check | set node as unscheduable
-  shell: "oc --config=../kubeconfig adm manage-node {{hostname}} --schedulable=false"
+  shell: "oc --config=../kubeconfig adm manage-node {{ inventory_hostname }} --schedulable=false"
   register: oc_get_node
   changed_when: 1==2
   failed_when: "'SchedulingDisabled' not in oc_get_node.stdout"
   delegate_to: localhost
 
 #- name: node check | drain pods from node
-#  shell: "oc --config=../kubeconfig adm drain {{hostname}} --delete-local-data --ignore-daemonsets  --force"
+#  shell: "oc --config=../kubeconfig adm drain {{ inventory_hostname }} --delete-local-data --ignore-daemonsets  --force"
 #  register: oc_get_node
 #  changed_when: 1==2
 #  failed_when: "'error' in oc_get_node.stdout"
@@ -27,7 +27,7 @@
   reboot:
 
 - name: node check | wait for node to appear as ready
-  shell: "oc --config=../kubeconfig get nodes |grep -i {{hostname}}|grep -i Ready"
+  shell: "oc --config=../kubeconfig get nodes |grep -i {{ inventory_hostname }}|grep -i Ready"
   register: oc_node_ready
   until: "'NotReady' not in oc_node_ready.stdout and 'Ready' in oc_node_ready.stdout"
   retries: 60
@@ -35,7 +35,7 @@
   delegate_to: localhost
 
 - name: node check | set node as scheduable
-  shell: "oc --config=../kubeconfig adm manage-node {{hostname}} --schedulable=true"
+  shell: "oc --config=../kubeconfig adm manage-node {{ inventory_hostname }} --schedulable=true"
   register: oc_node_up
   changed_when: 1==2
   failed_when: "'SchedulingDisabled' in oc_node_up.stdout"
