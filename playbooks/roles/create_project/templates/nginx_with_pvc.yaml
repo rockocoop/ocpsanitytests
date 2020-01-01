@@ -30,6 +30,7 @@ spec:
           claimName: {{storageclass}}-claim
       - name: log
         emptyDir: {}
+      imagePullPolicy: Always
   triggers:
   - type: ConfigChange
   strategy:
