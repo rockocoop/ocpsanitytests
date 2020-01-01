@@ -24,6 +24,7 @@ spec:
       volumes:
       - name: log
         emptyDir: {}
+      imagePullPolicy: Always  
   triggers:
   - type: ConfigChange
   strategy:
