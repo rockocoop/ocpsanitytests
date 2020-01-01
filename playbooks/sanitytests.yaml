@@ -3,8 +3,16 @@
 - hosts: localhost
   gather_facts: false
 
-  tasks:
+  pre_tasks:
 
+    - name: Fail task when commands_needed are not available
+      command: /usr/bin/which etcdctl
+      register: command_result
+      failed_when: >
+        ("no etcdctl in" in command_result.stderr)
+      delegate_to: "{{groups['masters'] | first}}"
+
+  tasks:
 
   - name: copy kubeconfig
     fetch: 
