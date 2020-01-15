@@ -31,7 +31,7 @@
   failed_when: "'router' not in router_health.stdout"
 
 - name: check | etcd
-  shell: "source /etc/etcd/etcd.conf && etcdctl --cert-file=$ETCD_PEER_CERT_FILE --key-file=$ETCD_PEER_KEY_FILE --ca-file=/etc/etcd/ca.crt --endpoints=$ETCD_LISTEN_CLIENT_URLS cluster-health"
+  shell: "source /etc/etcd/etcd.conf && etcdctl2 --cert-file=$ETCD_PEER_CERT_FILE --key-file=$ETCD_PEER_KEY_FILE --ca-file=/etc/etcd/ca.crt --endpoints=$ETCD_LISTEN_CLIENT_URLS cluster-health"
   register: etcd_health
   changed_when: 1==2
   failed_when: "'cluster is healthy' not in etcd_health.stdout"
