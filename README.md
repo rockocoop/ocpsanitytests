@@ -60,6 +60,8 @@ The following parameters are needed to run the tests, in addition to a valid OCP
 
 For OCP 4:
 
+Run playbook sanitytests_ocp4.yaml
+
 Add the following 2 parameters for running with OCP 4
 
 	etcdSkip=True
