@@ -5,11 +5,11 @@
   selinux:
     policy: targeted
     state: enforcing
-  when: ocpversion == '4'
+  when: ocpversion == 4
 
 - name: node check | insure workaround in place for pods restarts
   shell:  'echo -e "r /etc/cni/net.d/80-openshift-network.conf\nr /etc/origin/openvswitch/conf.db"  > /usr/lib/tmpfiles.d/cleanup-cni.conf'
-  when: ocpversion = '3'
+  when: ocpversion == 3
 
 - name: node check | set node as unscheduable
   shell: "oc --config=../kubeconfig adm manage-node {{ inventory_hostname }} --schedulable=false"
