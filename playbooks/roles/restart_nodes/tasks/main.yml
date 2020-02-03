@@ -20,6 +20,7 @@
 
 - name: node check | reboot node
   reboot:
+  when: ocpversion == 3
 
 - name: node check | wait for node to appear as ready
   shell: "oc --config=../kubeconfig get nodes |grep -i {{ inventory_hostname }}|grep -i Ready"
@@ -28,6 +29,7 @@
   retries: 60
   delay: 2
   delegate_to: localhost
+  when: ocpversion == 3
 
 - name: node check | set node as scheduable
   shell: "oc --config=../kubeconfig adm manage-node {{ inventory_hostname }} --schedulable=true"
