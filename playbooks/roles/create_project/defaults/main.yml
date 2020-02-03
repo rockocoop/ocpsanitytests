@@ -2,3 +2,4 @@
 # defaults file for create_project
 testproject: sanitytest
 #storageclass: glusterfs-storage
+ocpversion=3

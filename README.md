@@ -57,3 +57,11 @@ The following parameters are needed to run the tests, in addition to a valid OCP
 	localregistry: <registry where nginx image >
 	testproject: <name of temporary project created for test app>  - default value is "scoobydoo"
     storageclass: <persistent storage class type> - default is "glusterfs-storage" (optional)
+
+For OCP 4:
+
+Add the following 2 parameters for running with OCP 4
+
+	etcdSkip=True
+	ocpversion=4
+
