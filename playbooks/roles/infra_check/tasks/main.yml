@@ -11,6 +11,64 @@
     - openshift-console
     - openshift-web-console
     - openshift-sdn
+  when: ocpversion = '3'
+
+- name: check | infrastructure pods are up
+  shell: "oc --config=../kubeconfig get pods -n {{item}}"
+  register: oc_get_pods
+  changed_when: 1==2
+  failed_when: "'Terminated' in oc_get_pods.stdout or 'ErrImagePull' in oc_get_pods.stdout or 'Failed' in oc_get_pods.stdout or 'Crash' in oc_get_pods.stdout"
+  with_items:
+    - openshift
+    - openshift-apiserver
+    - openshift-apiserver-operator
+    - openshift-authentication
+    - openshift-authentication-operator
+    - openshift-cloud-credential-operator
+    - openshift-cluster-machine-approver
+    - openshift-cluster-node-tuning-operator
+    - openshift-cluster-samples-operator
+    - openshift-cluster-storage-operator
+    - openshift-cluster-version
+    - openshift-config
+    - openshift-config-managed
+    - openshift-console
+    - openshift-console-operator
+    - openshift-controller-manager
+    - openshift-controller-manager-operator
+    - openshift-dns
+    - openshift-dns-operator
+    - openshift-etcd
+    - openshift-image-registry
+    - openshift-infra
+    - openshift-ingress
+    - openshift-ingress-operator
+    - openshift-insights
+    - openshift-kni-infra
+    - openshift-kube-apiserver
+    - openshift-kube-apiserver-operator
+    - openshift-kube-controller-manager
+    - openshift-kube-controller-manager-operator
+    - openshift-kube-scheduler
+    - openshift-kube-scheduler-operator
+    - openshift-machine-api
+    - openshift-machine-config-operator
+    - openshift-marketplace
+    - openshift-monitoring
+    - openshift-multus
+    - openshift-network-operator
+    - openshift-node
+    - openshift-openstack-infra
+    - openshift-operator-lifecycle-manager
+    - openshift-operators
+    - openshift-ovirt-infra
+    - openshift-sdn
+    - openshift-service-ca
+    - openshift-service-ca-operator
+    - openshift-service-catalog-apiserver-operator
+    - openshift-service-catalog-controller-manager-operator
+    - openshift-user-workload-monitoring
+  when: ocpversion = '4'
 
 - name: check | all pods in all projects are running
   shell: "oc --config=../kubeconfig get pods --all-namespaces"
@@ -29,6 +87,14 @@
   register: router_health
   changed_when: 1==2
   failed_when: "'router' not in router_health.stdout"
+  when: ocpversion == '3'
+
+- name: check | router
+  shell: "oc --config=../kubeconfig -n openshift-ingress get deploymentconfigs/router"
+  register: router_health
+  changed_when: 1==2
+  failed_when: "'router' not in router_health.stdout"
+  when: ocpversion == '4'
 
 - name: check | etcd
   shell: "source /etc/etcd/etcd.conf && etcdctl2 --cert-file=$ETCD_PEER_CERT_FILE --key-file=$ETCD_PEER_KEY_FILE --ca-file=/etc/etcd/ca.crt --endpoints=$ETCD_LISTEN_CLIENT_URLS cluster-health"

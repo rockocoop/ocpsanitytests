@@ -1,0 +1,44 @@
+---
+
+- hosts: localhost
+  gather_facts: false
+
+
+  tasks:
+
+
+  - name: prepare admin user
+    shell: oc --config=../kubeconfig adm policy add-scc-to-user privileged system:serviceaccount:default:default
+
+  - name: prepare admin user
+    shell: oc --config=../kubeconfig adm policy add-scc-to-group anyuid system:authenticated
+
+- hosts: localhost
+  gather_facts: false
+  roles:
+    - create_project
+    - infra_check
+
+- hosts: nodes
+  gather_facts: false
+  serial: 1
+  roles:
+    - restart_nodes 
+
+
+- hosts: localhost
+  gather_facts: false
+
+
+  tasks:
+
+
+  - name: Final Check | pause for 5 minutes
+    pause:
+      minutes: 5
+
+  - name: Final Check | Check that all pods returned after tests
+    shell: "oc --config=../kubeconfig get pods --all-namespaces|grep -v Running|grep -v Completed|grep -v NAMESPACE|grep -v NAME|grep -v READY| grep -v STATUS| grep -v RESTARTS| grep -v AGE"
+    changed_when: 1==2
+    register: finalstatus
+    failed_when: finalstatus.stdout != ""

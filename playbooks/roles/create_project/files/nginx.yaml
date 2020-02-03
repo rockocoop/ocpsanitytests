@@ -1,0 +1,34 @@
+apiVersion: "v1"
+kind: "DeploymentConfig"
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+  namespace: sanitytest
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: rocko1-installer.whynot.play.com:5000/openshift3/nginx:latest
+        ports:
+        - name: web
+          containerPort: 80
+        volumeMounts:
+        - mountPath: /var/log/nginx
+          name: log
+      volumes:
+      - name: log
+        emptyDir: {}
+      imagePullPolicy: Always  
+  triggers:
+  - type: ConfigChange
+  strategy:
+    type: Rolling
+  paused: false
+  revisionHistoryLimit: 2
+  minReadySeconds: 0

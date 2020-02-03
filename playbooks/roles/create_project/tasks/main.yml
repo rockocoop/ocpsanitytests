@@ -7,6 +7,12 @@
 - name: Create test project | delete if exists
   shell: "oc --config=../kubeconfig delete project {{testproject}}" 
   when: "'{{testproject}}' in proj_exists.stdout"
+  register: deleteproj
+
+- name: pause for 1 minute
+  pause:
+    seconds: 20 
+  when: deleteproj.changed == true
 
 - name: Create test project | create the test project
   shell: "oc --config=../kubeconfig new-project {{testproject}}"
@@ -53,12 +59,11 @@
   shell: "oc --config=../kubeconfig create -f roles/create_project/files/nginxroute.yaml"
 
 - name: check | pods are up
-  shell: "oc get pods -n {{testproject}} |grep -i nginx|grep -i Running"
+  shell: "oc --config=../kubeconfig get pods -n {{testproject}} |grep -i nginx|grep -i Running"
   register: oc_get_pods
   until: "'Running' in oc_get_pods.stdout and 'deploy' not in oc_get_pods.stdout"
   retries: 60
   delay: 2
-  delegate_to: "{{groups['masters'] | first}}"
 
 - name: pause for 1 minute
   pause:

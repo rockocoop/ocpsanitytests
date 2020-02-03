@@ -8,6 +8,7 @@
 
 - name: node check | insure workaround in place for pods restarts
   shell:  'echo -e "r /etc/cni/net.d/80-openshift-network.conf\nr /etc/origin/openvswitch/conf.db"  > /usr/lib/tmpfiles.d/cleanup-cni.conf'
+  when: ocpversion = '3'
 
 - name: node check | set node as unscheduable
   shell: "oc --config=../kubeconfig adm manage-node {{ inventory_hostname }} --schedulable=false"
@@ -15,13 +16,6 @@
   changed_when: 1==2
   failed_when: "'SchedulingDisabled' not in oc_get_node.stdout"
   delegate_to: localhost
-
-#- name: node check | drain pods from node
-#  shell: "oc --config=../kubeconfig adm drain {{ inventory_hostname }} --delete-local-data --ignore-daemonsets  --force"
-#  register: oc_get_node
-#  changed_when: 1==2
-#  failed_when: "'error' in oc_get_node.stdout"
-#  delegate_to: localhost
 
 - name: node check | reboot node
   reboot:
