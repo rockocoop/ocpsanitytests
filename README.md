@@ -69,5 +69,7 @@ Add the following 2 parameters for running with OCP 4
 
 Run playbook sanitytests_ocp4.yaml
 
+NOTE:  when running on ocp 4 the following steps are skipped - etcd tests, reboot of nodes, selinux check on nodes
+
 
 
