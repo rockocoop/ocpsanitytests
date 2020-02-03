@@ -5,6 +5,7 @@
   selinux:
     policy: targeted
     state: enforcing
+  when: ocpversion == '4'
 
 - name: node check | insure workaround in place for pods restarts
   shell:  'echo -e "r /etc/cni/net.d/80-openshift-network.conf\nr /etc/origin/openvswitch/conf.db"  > /usr/lib/tmpfiles.d/cleanup-cni.conf'

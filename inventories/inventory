@@ -6,7 +6,6 @@ localregistry=rocko1-installer.whynot.play.com:5000/openshift3/nginx:latest
 insecure=True
 etcdSkip=True
 ocpversion=4
-ansible_ssh_user=core
 
 [nodes]
 rocko1-control-0.whynot.play.com
