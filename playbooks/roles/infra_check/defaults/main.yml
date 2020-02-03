@@ -1,3 +1,4 @@
 ---
 # defaults file for infra_check
 ocpversion: 3
+checkallpods: true

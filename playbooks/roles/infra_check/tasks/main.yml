@@ -11,7 +11,7 @@
     - openshift-console
     - openshift-web-console
     - openshift-sdn
-  when: ocpversion = '3'
+  when: ocpversion == '3'
 
 - name: check | infrastructure pods are up
   shell: "oc --config=../kubeconfig get pods -n {{item}}"
@@ -68,13 +68,14 @@
     - openshift-service-catalog-apiserver-operator
     - openshift-service-catalog-controller-manager-operator
     - openshift-user-workload-monitoring
-  when: ocpversion = '4'
+  when: ocpversion == '4'
 
 - name: check | all pods in all projects are running
   shell: "oc --config=../kubeconfig get pods --all-namespaces"
   register: oc_get_pods
   changed_when: 1==2
   failed_when: "'Terminated' in oc_get_pods.stdout or 'Err' in oc_get_pods.stdout or 'Failed' in oc_get_pods.stdout or 'Crash' in oc_get_pods.stdout"
+  when: checkallpods == true
 
 - name: check | node status
   shell: "oc --config=../kubeconfig get nodes"
