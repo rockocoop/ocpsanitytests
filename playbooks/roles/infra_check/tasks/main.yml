@@ -91,7 +91,7 @@
   when: ocpversion == 3
 
 - name: check | router
-  shell: "oc --config=../kubeconfig -n openshift-ingress get deploymentconfigs/router"
+  shell: "oc --config=../kubeconfig -n openshift-ingress get deployment router"
   register: router_health
   changed_when: 1==2
   failed_when: "'router' not in router_health.stdout"
