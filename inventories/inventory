@@ -8,5 +8,10 @@ etcdSkip=True
 ocpversion=4
 ansible_ssh_user=core
 
-#[masters]
-#allinonevm   ansible_ssh_host=
+[nodes]
+rocko1-control-0.whynot.play.com
+rocko1-control-1.whynot.play.com
+rocko1-control-2.whynot.play.com
+rocko1-compute-0.whynot.play.com
+rocko1-compute-1.whynot.play.com
+rocko1-compute-2.whynot.play.com
