@@ -1,7 +1,7 @@
 [all:vars]
 ansible_user=root
 ocpappsdomain=app.whynot.play.com
-openshift_console_api=https://console-openshift-console.apps.whynot.play.com
+openshift_console_api=console-openshift-console.apps.whynot.play.com
 localregistry=rocko1-installer.whynot.play.com:5000/openshift3/nginx:latest
 insecure=True
 etcdSkip=True
