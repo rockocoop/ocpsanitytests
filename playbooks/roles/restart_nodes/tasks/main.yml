@@ -16,7 +16,7 @@
   register: oc_get_node
   changed_when: 1==2
   failed_when: "'SchedulingDisabled' not in oc_get_node.stdout"
-  delegate_to: localhost
+  when: ocpversion == 3
 
 - name: node check | reboot node
   reboot:
@@ -34,5 +34,4 @@
   register: oc_node_up
   changed_when: 1==2
   failed_when: "'SchedulingDisabled' in oc_node_up.stdout"
-  delegate_to: localhost
-
+  when: ocpversion == 3
