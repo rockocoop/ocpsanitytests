@@ -9,7 +9,7 @@
   when: "'{{testproject}}' in proj_exists.stdout"
   register: deleteproj
 
-- name: pause for 1 minute
+- name: pause for 20 seconds
   pause:
     seconds: 20 
   when: deleteproj.changed == true

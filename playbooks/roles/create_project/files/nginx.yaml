@@ -19,12 +19,18 @@ spec:
         - name: web
           containerPort: 80
         volumeMounts:
+        - name: rook-ceph-block-vol1
+          mountPath: /usr/share/nginx/html
+          readOnly: false
         - mountPath: /var/log/nginx
           name: log
       volumes:
+      - name: rook-ceph-block-vol1
+        persistentVolumeClaim:
+          claimName: rook-ceph-block-claim
       - name: log
         emptyDir: {}
-      imagePullPolicy: Always  
+      imagePullPolicy: Always
   triggers:
   - type: ConfigChange
   strategy:

@@ -51,9 +51,11 @@
   - name: Final Check | pause for 5 minutes
     pause:
       minutes: 5
+    when:  checkallpods is defined and checkallpods == true
 
   - name: Final Check | Check that all pods returned after tests
     shell: "oc --config=../kubeconfig get pods --all-namespaces|grep -v Running|grep -v Completed|grep -v NAMESPACE|grep -v NAME|grep -v READY| grep -v STATUS| grep -v RESTARTS| grep -v AGE"
     changed_when: 1==2
     register: finalstatus
     failed_when: finalstatus.stdout != ""
+    when:  checkallpods is defined and checkallpods == true
