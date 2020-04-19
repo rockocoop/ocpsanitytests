@@ -1,0 +1,4 @@
+---
+
+routerfqdn: "console.apps.openshift.ocp3.rhevdemo.com"
+masterapifqdn: "openshift.ocp3.rhevdemo.com:8443" 

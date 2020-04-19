@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iperf3-server
+  namespace: iperf3
+spec:
+  selector:
+    matchLabels:
+      app: iperf3-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: iperf3-server
+    spec:
+      containers:
+        - name: iper3f-server
+          image: quay.io/ypery/iperf3-server:latest
+          ports:
+            - containerPort: 5001

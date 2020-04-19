@@ -1,0 +1,17 @@
+---
+
+- name: check the router certificate expiration
+  shell: "{{playbook_dir}}/roles/cer_exp/files/certcheck.sh"
+  register: validity_check
+  failed_when: "'expired' in validity_check.stdout"
+  changed_when: 1 == 2
+  environment: 
+    ROUTER_FQDN: "{{routerfqdn}}"
+
+- name: check the master api certificate expiration
+  shell: "{{playbook_dir}}/roles/cer_exp/files/certcheckmasterapi.sh"
+  register: validity_check
+  failed_when: "'expired' in validity_check.stdout"
+  changed_when: 1 == 2
+  environment:
+    MASTERAPI_FQDN: "{{masterapifqdn}}"

@@ -1,0 +1,13 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: iperf3-client
+  namespace: iperf3
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: iperf3-client
+    weight: 100
+  wildcardPolicy: None

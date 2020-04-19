@@ -1,0 +1,91 @@
+---
+  - name: copy the conf file for oc client
+    fetch:
+      src: /root/.kube/config
+      dest: ../kubeconfig
+      flat: yes
+
+  - name: prepare admin user
+    shell: oc adm policy add-scc-to-user privileged system:serviceaccount:default:default
+
+  - name: prepare admin user
+    shell: oc adm policy add-scc-to-group anyuid system:authenticated
+
+  - name: register projects
+    shell: "oc --config=../kubeconfig get projects"
+    register: proj_exists
+
+  - name: delete projects if exists
+    shell: "oc --config=../kubeconfig delete project {{iperfproject}}"
+    when: "'{{iperfproject}}' in proj_exists.stdout"
+    register: deleteproj
+
+  - name: pause for 20 seconds
+    pause:
+      seconds: 20
+    when: deleteproj.changed == true
+
+  - name: create iperf3 project
+    k8s:
+      state: present
+      src: roles/iperf/templates/project.yaml
+
+  - name: use antiafinity deployment
+    k8s:
+      state: present
+      src: roles/iperf/templates/pod-deployment-antiafinity.yaml
+
+  - name: deploy iperf server
+    k8s:
+      state: present
+      src: roles/iperf/templates/server-deployment.yaml
+
+  - name: create server svc
+    k8s:
+      state: present
+      src: roles/iperf/templates/server-svc.yaml
+
+  - name: create client svc
+    k8s:
+      state: present
+      src: roles/iperf/templates/client-svc.yaml
+
+  - name: create client route
+    k8s:
+      state: present
+      src: roles/iperf/templates/route.yaml
+
+  - name: Create variable from command
+    shell: "oc --config=../kubeconfig get route --no-headers | awk '{print $2}'"
+    register: route
+
+  - name: Create variable from command
+    shell: "oc --config=../kubeconfig get svc | grep server | awk '{print $3}'"
+    register: svc
+
+  - name: pause for 20 seconds
+    pause:
+      seconds: 20
+    when: route
+
+  - name: test bandwidth
+    uri:
+      url: "http://{{ route.stdout | trim }}/iperf/api.cgi?server={{ svc.stdout | trim }},port=5001,type=json"
+      method: GET
+      return_content: yes
+      status_code: 200
+    register: bandwidth
+    until: bandwidth.failed == false
+    retries: 60
+    delay: 5
+
+  - debug: 
+      var: bandwidth
+
+  - name: delete project
+    k8s:
+      state: absent
+      api_version: v1
+      kind: Namespace
+      namespace: iperf3
+      name: iperf3 

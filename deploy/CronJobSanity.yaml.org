@@ -1,0 +1,40 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: sanity
+  namespace: default
+spec:
+  schedule: "*/5 * * * *"
+  #schedule: "0 0 * * 0"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: sanity-wrap
+            image: quay.io/ypery/ocpsanity:v1.1
+            imagePullPolicy: Always
+            env:
+            - name: KUBECONFIG
+              value: "/root/kubeconfig"
+            - name:  K8S_AUTH_KUBECONFIG
+              value: "/root/kubeconfig"
+            command: ["/usr/bin/ansible-playbook"]
+            args: ["-i", "/root/inventory", "/root/playbooks/sanitytests_ocp4.yaml"]
+            volumeMounts:
+            - mountPath: /root/inventories/inventory 
+              name: inventory
+              subPath: inventory
+            - mountPath: /root/kubeconfig
+              name: kubeconfig
+              subPath: kubeconfig
+          volumes:
+          - configMap:
+              defaultMode: 0777
+              name: inventory
+            name: inventory
+          - configMap:
+              defaultMode: 0777
+              name: kubeconfig
+            name: kubeconfig
+          restartPolicy: OnFailure

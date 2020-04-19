@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysanity
+  namespace: default
+data:
+  sanity.file: |-
+    sanity_4.sh=/root/ocptest/playbook/sanity_4.sh
+

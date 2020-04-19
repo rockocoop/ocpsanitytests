@@ -1,0 +1,10 @@
+kind: Project
+apiVersion: project.openshift.io/v1
+metadata:
+  name: iperf3
+  annotations:
+    openshift.io/description: ''
+    openshift.io/display-name: ''
+spec:
+  finalizers:
+    - kubernetes

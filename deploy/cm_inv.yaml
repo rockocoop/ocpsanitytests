@@ -1,0 +1,58 @@
+apiVersion: v1
+data:
+  inventory: |
+    [all:vars]
+    #################
+    #### Ansible Vars
+    #################
+    ansible_ssh_user=core
+    ansible_become=false
+    timeout=60
+    #searchdomain=ocp3.rhevdemo.com
+    #dns=["10.35.76.222","8.8.8.8"]
+    #keepalived_vip=10.35.76.220
+    #keepalived_interface=eth0
+    #keepalived_vrrpid=1
+    #routervialb=true
+
+
+    ###################
+    ##### sanity tests
+    ###################
+    ocpappsdomain=apps.ocp42.sales.lab.tlv.redhat.com
+    openshift_console_api=apps.ocp42.sales.lab.tlv.redhat.com
+    localregistry="docker.io/nginx:latest"
+    #insecure=True
+    testproject=sanitytest
+    storageclass=managed-nfs-storage
+    etcdSkip=True
+    ocpversion=4
+
+    #####################
+    ##### OpenShift Hosts
+    #####################
+    [masters]
+    control-plane-0.ocp42.sales.lab.tlv.redhat.com
+    control-plane-1.ocp42.sales.lab.tlv.redhat.com
+    control-plane-2.ocp42.sales.lab.tlv.redhat.com
+
+    [etcd:children]
+    masters
+
+    [nodes]
+    compute-0.ocp42.sales.lab.tlv.redhat.com
+    compute-1.ocp42.sales.lab.tlv.redhat.com
+    control-plane-0.ocp42.sales.lab.tlv.redhat.com
+    control-plane-1.ocp42.sales.lab.tlv.redhat.com
+    control-plane-2.ocp42.sales.lab.tlv.redhat.com
+
+    [nodes:children]
+    masters
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2020-04-13T09:22:37Z"
+  name: inventory
+  namespace: default
+  resourceVersion: "114010453"
+  selfLink: /api/v1/namespaces/default/configmaps/inventory
+  uid: 50fd1fda-7d68-11ea-8016-005056954a92

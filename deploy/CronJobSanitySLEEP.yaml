@@ -1,0 +1,37 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: sanity
+  namespace: default
+spec:
+  schedule: "*/2 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: sanity-wrap
+            image: quay.io/ypery/ocpsanity:latest
+            imagePullPolicy: Always
+            env:
+            - name: KUBECONFIG
+              value: "/root/kubeconfig"
+            command: ["sleep"]
+            args: ["10000"]
+            volumeMounts:
+            - mountPath: /root/inventory
+              name: inventory
+              subPath: inventory
+            - mountPath: /root/kubeconfig
+              name: kubeconfig
+              subPath: kubeconfig 
+          volumes:
+          - configMap:
+              defaultMode: 0777
+              name: inventory
+            name: inventory
+          - configMap:
+              defaultMode: 0600
+              name: kubeconfig
+            name: kubeconfig
+          restartPolicy: OnFailure
